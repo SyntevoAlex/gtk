@@ -2401,12 +2401,22 @@ gtk_style_context_pop_animatable_region (GtkStyleContext *context)
 }
 
 static GtkCssStyleChange magic_number;
+int g_PrintOffset = 0;
 
 void
 gtk_style_context_validate (GtkStyleContext  *context,
                             GtkCssStyleChange *change)
 {
   GtkStyleContextPrivate *priv;
+
+  printf(
+  	"%*s1:gtk_style_context_validate(): %p=context %p=node %p=style\n",
+    g_PrintOffset++,
+    "",
+  	context,
+  	gtk_style_context_get_node(context),
+  	gtk_css_node_get_style(gtk_style_context_get_node(context))
+  );
 
   g_return_if_fail (GTK_IS_STYLE_CONTEXT (context));
 
@@ -2426,6 +2436,15 @@ gtk_style_context_validate (GtkStyleContext  *context,
   g_object_set_data (G_OBJECT (context), "font-cache-for-get_font", NULL);
 
   priv->invalidating_context = NULL;
+
+  printf(
+  	"%*s2:gtk_style_context_validate(): %p=context %p=node %p=style\n",
+    --g_PrintOffset,
+    "",
+  	context,
+  	gtk_style_context_get_node(context),
+  	gtk_css_node_get_style(gtk_style_context_get_node(context))
+  );
 }
 
 /**

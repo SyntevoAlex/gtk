@@ -556,11 +556,29 @@ gtk_css_node_real_node_added (GtkCssNode *parent,
   node->parent = parent;
 }
 
+extern int g_PrintOffset;
+
 static void
 gtk_css_node_real_style_changed (GtkCssNode        *cssnode,
                                  GtkCssStyleChange *change)
 {
+  printf(
+  	"%*s1:gtk_css_node_real_style_changed(): %p=node %p=style\n",
+    g_PrintOffset++,
+    "",
+  	cssnode,
+  	cssnode->style
+  );
+
   g_set_object (&cssnode->style, gtk_css_style_change_get_new_style (change));
+
+  printf(
+  	"%*s2:gtk_css_node_real_style_changed(): %p=node %p=style\n",
+    --g_PrintOffset,
+    "",
+  	cssnode,
+  	cssnode->style
+  );
 }
 
 static void

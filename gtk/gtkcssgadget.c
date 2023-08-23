@@ -707,6 +707,8 @@ gtk_css_gadget_get_preferred_size (GtkCssGadget   *gadget,
 
 }
 
+extern int g_PrintOffset;
+
 /**
  * gtk_css_gadget_allocate:
  * @gadget: the #GtkCssGadget to allocate
@@ -787,7 +789,49 @@ gtk_css_gadget_allocate (GtkCssGadget        *gadget,
       content_allocation.height = 0;
     }
 
+  {
+	GtkCssStyle* real_style = gtk_css_gadget_get_style(gadget);
+	GtkStyleContext* context = gtk_widget_get_style_context(priv->owner);
+    GtkCssNode* contextNode = gtk_style_context_get_node(context);
+    GtkCssStyle* contextStyle = gtk_css_node_get_style(contextNode);
+	
+    printf(
+      "%*s1:gtk_css_gadget_allocate(): %p=gadget %p=style %p=real_style %p=node %p=widget %p=context %p=node %p=style\n",
+       g_PrintOffset++,
+       "",
+       gadget,
+       style,
+       real_style,
+       priv->node,
+       priv->owner,
+       context,
+       contextNode,
+	   contextStyle
+    );
+  }
+  
   GTK_CSS_GADGET_GET_CLASS (gadget)->allocate (gadget, &content_allocation, baseline, &content_clip);
+
+  {
+	GtkCssStyle* real_style = gtk_css_gadget_get_style(gadget);
+	GtkStyleContext* context = gtk_widget_get_style_context(priv->owner);
+    GtkCssNode* contextNode = gtk_style_context_get_node(context);
+    GtkCssStyle* contextStyle = gtk_css_node_get_style(contextNode);
+	
+    printf(
+      "%*s2:gtk_css_gadget_allocate(): %p=gadget %p=style %p=real_style %p=node %p=widget %p=context %p=node %p=style\n",
+       --g_PrintOffset,
+       "",
+       gadget,
+       style,
+       real_style,
+       priv->node,
+       priv->owner,
+       context,
+       contextNode,
+	   contextStyle
+    );
+  }
 
   _gtk_css_shadows_value_get_extents (gtk_css_style_get_value (style, GTK_CSS_PROPERTY_BOX_SHADOW), &shadow);
 
